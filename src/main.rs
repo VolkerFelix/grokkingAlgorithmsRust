@@ -1,5 +1,6 @@
 mod binary_search;
 mod selection_sort;
+mod quick_sort;
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Result};
 use actix_files::NamedFile;
