@@ -2,6 +2,7 @@ mod binary_search;
 mod selection_sort;
 mod quick_sort;
 mod breadth_first;
+mod graph;
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Result};
 use actix_files::NamedFile;

@@ -1,16 +1,19 @@
 #[cfg(test)]
 
-use crate::breadth_first::breadth_first::{breadth_first, Node, Graph};
+use crate::breadth_first::breadth_first::breadth_first;
+use crate::graph::graph::{Graph, Node};
 
 #[test]
 fn test_node_graph_creation_and_fmt() {
-    let johannes = Node::new("Johannes", &[], true);
-    let marcel = Node::new("Marcel", &[], false);
-    let timos_friends = [&johannes, &marcel];
-    let timo = Node::new("Timo", &timos_friends, false);
-    let tobias = Node::new("Tobias", &[], false);
-    let my_friends = [&timo, &tobias];
-    let me = Node::new("Volker", &my_friends, false);
+    let johannes = Node::new("Johannes", true);
+    let marcel = Node::new("Marcel", false);
+    let mut timo = Node::new("Timo", false);
+    timo.add_edge(None, &johannes);
+    timo.add_edge(None, &marcel);
+    let tobias = Node::new("Tobias", false);
+    let mut me = Node::new("Volker", false);
+    me.add_edge(None, &tobias);
+    me.add_edge(None, &timo);
 
     let mut graph = Graph::default();
     graph.m_nodes.push(&johannes);
@@ -26,13 +29,15 @@ fn test_node_graph_creation_and_fmt() {
 
 #[test]
 fn breadth_first_algo_found() {
-    let johannes = Node::new("Johannes", &[], true);
-    let marcel = Node::new("Marcel", &[], false);
-    let timos_friends = [&johannes, &marcel];
-    let timo = Node::new("Timo", &timos_friends, false);
-    let tobias = Node::new("Tobias", &[], false);
-    let my_friends = [&timo, &tobias];
-    let me = Node::new("Volker", &my_friends, false);
+    let johannes = Node::new("Johannes", true);
+    let marcel = Node::new("Marcel", false);
+    let mut timo = Node::new("Timo", false);
+    timo.add_edge(None, &johannes);
+    timo.add_edge(None, &marcel);
+    let tobias = Node::new("Tobias", false);
+    let mut me = Node::new("Volker", false);
+    me.add_edge(None, &tobias);
+    me.add_edge(None, &timo);
 
     let mut graph = Graph::default();
     graph.m_nodes.push(&johannes);
@@ -47,13 +52,15 @@ fn breadth_first_algo_found() {
 
 #[test]
 fn breadth_first_algo_not_found() {
-    let johannes = Node::new("Johannes", &[], false);
-    let marcel = Node::new("Marcel", &[], false);
-    let timos_friends = [&johannes, &marcel];
-    let timo = Node::new("Timo", &timos_friends, false);
-    let tobias = Node::new("Tobias", &[], false);
-    let my_friends = [&timo, &tobias];
-    let me = Node::new("Volker", &my_friends, false);
+    let johannes = Node::new("Johannes", false);
+    let marcel = Node::new("Marcel", false);
+    let mut timo = Node::new("Timo", false);
+    timo.add_edge(None, &johannes);
+    timo.add_edge(None, &marcel);
+    let tobias = Node::new("Tobias", false);
+    let mut me = Node::new("Volker", false);
+    me.add_edge(None, &tobias);
+    me.add_edge(None, &timo);
 
     let mut graph = Graph::default();
     graph.m_nodes.push(&johannes);

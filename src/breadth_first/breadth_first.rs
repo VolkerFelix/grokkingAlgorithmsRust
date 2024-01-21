@@ -1,40 +1,5 @@
-use std::{fmt, collections::VecDeque};
-
-#[derive(Debug, PartialEq)]
-pub struct Node<'a> {
-    m_name: &'a str,
-    m_connections: &'a[&'a Node<'a>],
-    m_want_to_be_found: bool
-}
-
-impl<'a> Node<'a> {
-    pub fn new(f_name: &'a str, f_connections: &'a [&'a Node<'a>], f_want_to_be_found: bool) -> Self {
-        Node {
-            m_name: f_name,
-            m_connections: f_connections,
-            m_want_to_be_found: f_want_to_be_found
-        }
-    }
-
-    fn already_checked(&self, f_checked_nodes: &Vec<Node>) -> bool {
-        f_checked_nodes.contains(self)
-    }
-}
-
-#[derive(Default)]
-pub struct Graph<'a> {
-    pub m_nodes: Vec<&'a Node<'a>>,
-}
-
-impl<'a> fmt::Display for Node<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut ret = write!(f, "Name: {}\n", self.m_name);
-        for connection in self.m_connections {
-            ret = write!(f, "Friend: {}\n", connection.m_name);
-        }
-        ret
-    }
-}
+use std::collections::VecDeque;
+use crate::graph::graph::{Graph, Node};
 
 pub fn breadth_first<'a>(f_graph: &'a Graph) -> Option<&'a Node<'a>>{
     let mut search_deque: VecDeque<&Node> = VecDeque::new();
