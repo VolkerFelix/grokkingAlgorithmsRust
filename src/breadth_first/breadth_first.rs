@@ -15,6 +15,10 @@ impl<'a> Node<'a> {
             m_want_to_be_found: f_want_to_be_found
         }
     }
+
+    fn already_checked(&self, f_checked_nodes: &Vec<Node>) -> bool {
+        f_checked_nodes.contains(self)
+    }
 }
 
 #[derive(Default)]
@@ -40,7 +44,7 @@ pub fn breadth_first<'a>(f_graph: &'a Graph) -> Option<&'a Node<'a>>{
         // Get new element from deque
         let node_to_be_checked = search_deque.pop_front().unwrap();
         // Did I come across this node already?
-        if !was_node_already_checked(&node_to_be_checked, &checked_nodes) {
+        if !node_to_be_checked.already_checked(&checked_nodes) {
             if node_to_be_checked.m_want_to_be_found == true {
                 return Some(node_to_be_checked);
             } else {
@@ -50,9 +54,5 @@ pub fn breadth_first<'a>(f_graph: &'a Graph) -> Option<&'a Node<'a>>{
         }
     }
     None
-}
-
-fn was_node_already_checked(f_node: &Node, f_checked_nodes: &Vec<Node>) -> bool {
-    f_checked_nodes.contains(f_node)
 }
 
