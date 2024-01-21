@@ -1,6 +1,6 @@
-use std::{fmt, collections::VecDeque, io::Write};
+use std::{fmt, collections::VecDeque};
 
-#[derive(PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct Node<'a> {
     m_name: &'a str,
     m_connections: &'a[&'a Node<'a>],
@@ -32,26 +32,27 @@ impl<'a> fmt::Display for Node<'a> {
     }
 }
 
-// pub fn breadth_first<'a>(f_nodes: &VecDeque<Node>) -> Option<Node<'a>>{
-//     let checked_nodes: Vec<Node> = Vec::new();
-//     while !f_nodes.is_empty() {
-//         // Get new element from deque
-//         let node_to_be_checked = f_nodes.pop_front().unwrap();
-//         // Did I come across this name already?
-//         if !was_node_already_checked(&node_to_be_checked, &checked_nodes) {
-//             if node_to_be_checked.m_want_to_be_found == true {
-//                 return Some(node_to_be_checked);
-//             }
-//             else {
+pub fn breadth_first<'a>(f_graph: &'a Graph) -> Option<&'a Node<'a>>{
+    let mut search_deque: VecDeque<&Node> = VecDeque::new();
+    search_deque.push_back(f_graph.m_nodes.first().unwrap());
+    let checked_nodes: Vec<Node> = Vec::new();
+    while !search_deque.is_empty() {
+        // Get new element from deque
+        let node_to_be_checked = search_deque.pop_front().unwrap();
+        // Did I come across this node already?
+        if !was_node_already_checked(&node_to_be_checked, &checked_nodes) {
+            if node_to_be_checked.m_want_to_be_found == true {
+                return Some(node_to_be_checked);
+            } else {
+                // Add all connected nodes to the deque
+                search_deque.extend(node_to_be_checked.m_connections.iter());
+            }
+        }
+    }
+    None
+}
 
-//             }
-//         }
-//     }
-
-//     Ok(())
-// }
-
-// fn was_node_already_checked(f_node: &Node, f_checked_nodes: &Vec<Node>) -> bool {
-//     f_checked_nodes.contains(f_node)
-// }
+fn was_node_already_checked(f_node: &Node, f_checked_nodes: &Vec<Node>) -> bool {
+    f_checked_nodes.contains(f_node)
+}
 
