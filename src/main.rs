@@ -3,6 +3,7 @@ mod selection_sort;
 mod quick_sort;
 mod breadth_first;
 mod graph;
+mod dijkstra;
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Result};
 use actix_files::NamedFile;

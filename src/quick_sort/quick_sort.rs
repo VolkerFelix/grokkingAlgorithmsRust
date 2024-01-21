@@ -1,5 +1,3 @@
-use rand::prelude::*;
-
 /// Recursive implementation of Quick Sort.
 /// Partition index is obtained and then
 /// the function is called recursively with the elements before and after the pivot.

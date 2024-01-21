@@ -1,7 +1,7 @@
 use std::{fmt, collections::VecDeque};
 use std::iter::Extend;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct Node<'a> {
     pub m_name: &'a str,
     pub m_connections: Vec<Edge<'a>>,
@@ -27,7 +27,7 @@ impl<'a> Node<'a> {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct Edge<'a> {
     pub m_weight: Option<usize>,
     pub m_connects: &'a Node<'a>,

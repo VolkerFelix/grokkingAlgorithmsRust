@@ -1,7 +1,6 @@
 #[cfg(test)]
 
 use crate::quick_sort::quick_sort::quick_sort;
-use rand::random;
 
 #[test]
 fn test_quick_sort() {
