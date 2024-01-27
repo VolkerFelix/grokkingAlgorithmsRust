@@ -50,10 +50,6 @@ pub struct Graph<'a> {
 impl<'a> fmt::Display for Node<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Name: {}\n", self.m_name)
-        // for connection in &self.m_connections {
-        //     ret = write!(f, "Friend: {}\n", connection.m_connects.m_name);
-        // }
-        // ret
     }
 }
 
