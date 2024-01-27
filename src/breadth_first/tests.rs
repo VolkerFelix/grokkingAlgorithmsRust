@@ -22,9 +22,9 @@ fn test_node_graph_creation_and_fmt() {
     graph.m_nodes.push(&tobias);
     graph.m_nodes.push(&me);
 
-    for node in graph.m_nodes {
-        println!("Node content:\n{}", node);
-    }
+    // for node in graph.m_nodes {
+    //     println!("Node content:\n{}", node);
+    // }
 }
 
 #[test]

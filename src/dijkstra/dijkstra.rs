@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 use crate::graph::graph::{Graph, Node};
 
 pub fn dijkstra<'a, 'b>(f_graph: &'a Graph) -> Option<Graph<'b>> {
@@ -10,9 +10,8 @@ pub fn dijkstra<'a, 'b>(f_graph: &'a Graph) -> Option<Graph<'b>> {
     let start = f_graph.m_nodes.first().unwrap();
     for edge in &start.m_connections {
         costs.insert(edge.m_connects, edge.m_weight.unwrap());
-        parents.insert(&start, edge.m_connects);
+        parents.insert(edge.m_connects, start);
     }
-    let temp_costs = costs.clone();
 
     let mut lowest_weight_node = find_lowest_weight_node(&costs, &already_processed);
 
@@ -22,18 +21,27 @@ pub fn dijkstra<'a, 'b>(f_graph: &'a Graph) -> Option<Graph<'b>> {
         for neighbour in &current_node.m_connections {
             // Get cost to get to current node
             let current_node_cost = costs.get(current_node).unwrap();
-            // Calculate new total cost to get to this neighbour
+            // Calculate new total cost to get to neighbour
             let new_cost = current_node_cost + neighbour.m_weight.unwrap();
+            let neighbour_node = neighbour.m_connects;
+            // Has this node been discovered before?
+            // If not, insert to costs and parents.
+            if !costs.contains_key(neighbour_node) {
+                costs.insert(neighbour_node, new_cost);
+                parents.insert(neighbour_node, current_node);
+            }
             // Compare with existing costs
-            if costs.get(neighbour.m_connects).unwrap() > &new_cost {
+            if costs.get(neighbour_node).unwrap() > &new_cost {
                 // Found a cheaper way! --> Update costs and parent
-                costs.insert(neighbour.m_connects, new_cost);
-                parents.insert(neighbour.m_connects, current_node);
+                println!("Current neighbour: {}", neighbour_node);
+                costs.insert(neighbour_node, new_cost);
+                parents.insert(neighbour_node, current_node);
             }
         }
         already_processed.push(current_node);
         lowest_weight_node = find_lowest_weight_node(&costs, &already_processed);
     }
+
     for (child, parent) in parents.iter() {
         println!("Final result: ");
         println!("Child: {}, Parent: {}", child.m_name, parent.m_name);
