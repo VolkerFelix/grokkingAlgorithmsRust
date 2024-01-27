@@ -33,7 +33,6 @@ pub fn dijkstra<'a, 'b>(f_graph: &'a Graph) -> Option<Graph<'b>> {
             // Compare with existing costs
             if costs.get(neighbour_node).unwrap() > &new_cost {
                 // Found a cheaper way! --> Update costs and parent
-                println!("Current neighbour: {}", neighbour_node);
                 costs.insert(neighbour_node, new_cost);
                 parents.insert(neighbour_node, current_node);
             }
@@ -59,4 +58,55 @@ fn find_lowest_weight_node<'a>(f_node_map: &HashMap<&'a Node, usize>, f_already_
         }
     }
     lowest_cost_node
+}
+
+fn create_shortest_path<'a>(f_parents: &HashMap<&Node, &Node>) -> Result<Graph<'a>, &'static str> {
+    // Find finish node
+    let mut finish_node: Option<&Node> = None;
+    for (child, parent) in f_parents {
+        match child.m_finish {
+            Some(finish) => {
+                if finish {
+                    finish_node = Some(child);
+                    break;
+                }
+            },
+            None => continue
+        };
+        match parent.m_finish {
+            Some(finish) => {
+                if finish {
+                    finish_node = Some(parent);
+                    break;
+                }
+            },
+            None => continue
+        }
+    }
+    if finish_node.is_none() {
+        return Err("No finish node found!");
+    }
+
+    let mut shortest_path = Graph::default();
+    shortest_path.m_nodes.push(finish_node.unwrap());
+
+    // Now loop backward until root node is found
+    let mut prev_child = finish_node.unwrap();
+    let mut root_found = false;
+    while !root_found {
+        let mut parent = *f_parents.get(prev_child).unwrap().clone();
+        parent.add_edge(None, prev_child);
+        shortest_path.m_nodes.push(parent);
+        match parent.m_root {
+            Some(root) => {
+                if root {
+                    break;
+                }
+            },
+            None => continue
+        }
+        prev_child = &parent;
+
+    }
+    Ok(shortest_path)
 }

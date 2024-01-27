@@ -1,3 +1,5 @@
+use std::io;
+use std::panic::RefUnwindSafe;
 use std::{fmt, collections::VecDeque};
 use std::iter::Extend;
 
@@ -5,15 +7,19 @@ use std::iter::Extend;
 pub struct Node<'a> {
     pub m_name: &'a str,
     pub m_connections: Vec<Edge<'a>>,
-    pub m_want_to_be_found: bool
+    pub m_want_to_be_found: Option<bool>,
+    pub m_root: Option<bool>,
+    pub m_finish: Option<bool>
 }
 
 impl<'a> Node<'a> {
-    pub fn new(f_name: &'a str, f_want_to_be_found: bool) -> Self {
+    pub fn new(f_name: &'a str, f_want_to_be_found: Option<bool>, f_root: Option<bool>, f_finish: Option<bool>) -> Self {
         Node {
             m_name: f_name,
             m_connections: Vec::new(),
-            m_want_to_be_found: f_want_to_be_found
+            m_want_to_be_found: f_want_to_be_found,
+            m_root: f_root,
+            m_finish: f_finish
         }
     }
 
@@ -45,6 +51,8 @@ impl<'a> Edge<'a> {
 #[derive(Default)]
 pub struct Graph<'a> {
     pub m_nodes: Vec<&'a Node<'a>>,
+    pub m_root_set: Option<bool>,
+    pub m_finish_set: Option<bool>,
 }
 
 impl<'a> fmt::Display for Node<'a> {

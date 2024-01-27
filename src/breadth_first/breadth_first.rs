@@ -10,7 +10,7 @@ pub fn breadth_first<'a>(f_graph: &'a Graph) -> Option<&'a Node<'a>>{
         let node_to_be_checked = search_deque.pop_front().unwrap();
         // Did I come across this node already?
         if !node_to_be_checked.already_checked(&checked_nodes) {
-            if node_to_be_checked.m_want_to_be_found == true {
+            if node_to_be_checked.m_want_to_be_found.unwrap() == true {
                 return Some(node_to_be_checked);
             } else {
                 // Add all connected nodes to the deque
