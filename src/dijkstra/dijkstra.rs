@@ -1,4 +1,4 @@
-use std::collections::{HashMap, VecDeque};
+use std::{collections::{HashMap, VecDeque}, ops::Deref};
 use crate::graph::graph::{Graph, Node};
 
 pub fn dijkstra<'a, 'b>(f_graph: &'a Graph) -> Option<Graph<'b>> {
@@ -88,15 +88,15 @@ fn create_shortest_path<'a>(f_parents: &HashMap<&Node, &Node>) -> Result<Graph<'
     }
 
     let mut shortest_path = Graph::default();
-    shortest_path.m_nodes.push(finish_node.unwrap());
+    shortest_path.m_nodes.push(finish_node.unwrap().clone());
 
     // Now loop backward until root node is found
-    let mut prev_child = finish_node.unwrap();
+    let mut prev_child = finish_node.unwrap().clone();
     let mut root_found = false;
     while !root_found {
-        let mut parent = *f_parents.get(prev_child).unwrap().clone();
-        parent.add_edge(None, prev_child);
-        shortest_path.m_nodes.push(parent);
+        let mut parent = f_parents.get(&prev_child).unwrap().deref().clone();
+        parent.add_edge(None, &prev_child.clone());
+        shortest_path.m_nodes.push(parent.clone());
         match parent.m_root {
             Some(root) => {
                 if root {
@@ -105,7 +105,7 @@ fn create_shortest_path<'a>(f_parents: &HashMap<&Node, &Node>) -> Result<Graph<'
             },
             None => continue
         }
-        prev_child = &parent;
+        prev_child = parent;
 
     }
     Ok(shortest_path)

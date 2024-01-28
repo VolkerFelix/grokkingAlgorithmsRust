@@ -18,11 +18,11 @@ fn dijkstra_algo() {
     alpha.add_edge(Some(7), &charlie);
 
     let mut graph = Graph::default();
-    graph.m_nodes.push(&alpha);
-    graph.m_nodes.push(&bravo);
-    graph.m_nodes.push(&charlie);
-    graph.m_nodes.push(&delta);
-    graph.m_nodes.push(&echo);
+    graph.m_nodes.push(alpha);
+    graph.m_nodes.push(bravo.clone());
+    graph.m_nodes.push(charlie.clone());
+    graph.m_nodes.push(delta.clone());
+    graph.m_nodes.push(echo.clone());
 
     let _test = dijkstra(&graph);
 }

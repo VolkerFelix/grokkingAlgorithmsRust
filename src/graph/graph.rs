@@ -3,7 +3,7 @@ use std::panic::RefUnwindSafe;
 use std::{fmt, collections::VecDeque};
 use std::iter::Extend;
 
-#[derive(Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[derive(Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Clone)]
 pub struct Node<'a> {
     pub m_name: &'a str,
     pub m_connections: Vec<Edge<'a>>,
@@ -33,7 +33,7 @@ impl<'a> Node<'a> {
     }
 }
 
-#[derive(Debug, PartialEq, PartialOrd, Eq, Ord, Hash)]
+#[derive(Debug, PartialEq, PartialOrd, Eq, Ord, Hash, Clone)]
 pub struct Edge<'a> {
     pub m_weight: Option<usize>,
     pub m_connects: &'a Node<'a>,
@@ -50,7 +50,7 @@ impl<'a> Edge<'a> {
 
 #[derive(Default)]
 pub struct Graph<'a> {
-    pub m_nodes: Vec<&'a Node<'a>>,
+    pub m_nodes: Vec<Node<'a>>,
     pub m_root_set: Option<bool>,
     pub m_finish_set: Option<bool>,
 }

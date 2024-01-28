@@ -16,11 +16,11 @@ fn breadth_first_algo_found() {
     alpha.add_edge(None, &charlie);
 
     let mut graph = Graph::default();
-    graph.m_nodes.push(&echo);
-    graph.m_nodes.push(&delta);
-    graph.m_nodes.push(&charlie);
-    graph.m_nodes.push(&bravo);
-    graph.m_nodes.push(&alpha);
+    graph.m_nodes.push(echo);
+    graph.m_nodes.push(delta);
+    graph.m_nodes.push(charlie);
+    graph.m_nodes.push(bravo);
+    graph.m_nodes.push(alpha);
 
     let found = breadth_first(&graph).unwrap();
     assert_eq!(found, &echo);
@@ -39,11 +39,11 @@ fn breadth_first_algo_not_found() {
     alpha.add_edge(None, &charlie);
 
     let mut graph = Graph::default();
-    graph.m_nodes.push(&echo);
-    graph.m_nodes.push(&delta);
-    graph.m_nodes.push(&charlie);
-    graph.m_nodes.push(&bravo);
-    graph.m_nodes.push(&alpha);
+    graph.m_nodes.push(echo);
+    graph.m_nodes.push(delta);
+    graph.m_nodes.push(charlie);
+    graph.m_nodes.push(bravo);
+    graph.m_nodes.push(alpha);
 
     let found = breadth_first(&graph);
     assert_eq!(found, None);
