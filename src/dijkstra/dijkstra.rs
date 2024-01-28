@@ -1,7 +1,9 @@
-use std::{collections::{HashMap, VecDeque}, ops::Deref};
+use std::collections::HashMap;
 use crate::graph::graph::{Graph, Node};
 
-pub fn dijkstra<'a, 'b>(f_graph: &'a Graph) -> Option<Graph<'b>> {
+pub type DijkstraResult = Result<String, &'static str>;
+
+pub fn dijkstra<'a>(f_graph: &'a Graph) -> DijkstraResult {
     let mut costs: HashMap<&Node, usize> = HashMap::new();
     let mut parents: HashMap<&Node, &Node> = HashMap::new();
     let mut already_processed: Vec<&Node> = Vec::new();
@@ -41,11 +43,7 @@ pub fn dijkstra<'a, 'b>(f_graph: &'a Graph) -> Option<Graph<'b>> {
         lowest_weight_node = find_lowest_weight_node(&costs, &already_processed);
     }
 
-    for (child, parent) in parents.iter() {
-        println!("Final result: ");
-        println!("Child: {}, Parent: {}", child.m_name, parent.m_name);
-    }
-    None
+    create_shortest_path(&parents)
 }
 
 fn find_lowest_weight_node<'a>(f_node_map: &HashMap<&'a Node, usize>, f_already_processed: &Vec<&Node>) -> Option<&'a Node<'a>> {
@@ -60,7 +58,7 @@ fn find_lowest_weight_node<'a>(f_node_map: &HashMap<&'a Node, usize>, f_already_
     lowest_cost_node
 }
 
-fn create_shortest_path<'a>(f_parents: &HashMap<&Node, &Node>) -> Result<Graph<'a>, &'static str> {
+fn create_shortest_path(f_parents: &HashMap<&Node, &Node>) -> DijkstraResult {
     // Find finish node
     let mut finish_node: Option<&Node> = None;
     for (child, parent) in f_parents {
@@ -71,7 +69,7 @@ fn create_shortest_path<'a>(f_parents: &HashMap<&Node, &Node>) -> Result<Graph<'
                     break;
                 }
             },
-            None => continue
+            None => ()
         };
         match parent.m_finish {
             Some(finish) => {
@@ -80,32 +78,27 @@ fn create_shortest_path<'a>(f_parents: &HashMap<&Node, &Node>) -> Result<Graph<'
                     break;
                 }
             },
-            None => continue
+            None => ()
         }
     }
     if finish_node.is_none() {
         return Err("No finish node found!");
     }
-
-    let mut shortest_path = Graph::default();
-    shortest_path.m_nodes.push(finish_node.unwrap().clone());
-
     // Now loop backward until root node is found
-    let mut prev_child = finish_node.unwrap().clone();
-    let mut root_found = false;
-    while !root_found {
-        let mut parent = f_parents.get(&prev_child).unwrap().deref().clone();
-        parent.add_edge(None, &prev_child.clone());
-        shortest_path.m_nodes.push(parent.clone());
+    let mut child = finish_node.unwrap();
+    let mut shortest_path = child.m_name.to_string();
+    loop {
+        let parent = f_parents.get(child).unwrap();
+        shortest_path.push_str(parent.m_name);
         match parent.m_root {
             Some(root) => {
                 if root {
                     break;
                 }
             },
-            None => continue
+            None => ()
         }
-        prev_child = parent;
+        child = parent;
 
     }
     Ok(shortest_path)

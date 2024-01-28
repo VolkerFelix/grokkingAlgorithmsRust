@@ -1,5 +1,3 @@
-use std::io;
-use std::panic::RefUnwindSafe;
 use std::{fmt, collections::VecDeque};
 use std::iter::Extend;
 
@@ -50,7 +48,7 @@ impl<'a> Edge<'a> {
 
 #[derive(Default)]
 pub struct Graph<'a> {
-    pub m_nodes: Vec<Node<'a>>,
+    pub m_nodes: Vec<&'a Node<'a>>,
     pub m_root_set: Option<bool>,
     pub m_finish_set: Option<bool>,
 }
