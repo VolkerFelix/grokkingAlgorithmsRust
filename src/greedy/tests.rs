@@ -6,12 +6,30 @@ use crate::greedy::greedy::greedy;
 fn test_greedy() {
     use std::collections::{HashMap, HashSet};
 
-    let mut radio_state_map: HashMap<&str, HashSet<&str>> = HashMap::new();
-    radio_state_map.insert("KONE", &["ID", "NV", "UT"]);
-    radio_state_map.insert("KTWO", &["WA", "ID", "MT"]);
-    radio_state_map.insert("KTHREE", &["OR", "NV", "CA"]);
-    radio_state_map.insert("KFOUR", &["NV", "UT"]);
-    radio_state_map.insert("KFIVE", &["CA", "AZ"]);
+    let mut radio_state_map: HashMap<&str, &HashSet<&str>> = HashMap::new();
+    let mut kone_states = HashSet::new();
+    kone_states.insert("ID");
+    kone_states.insert("NV");
+    kone_states.insert("UT");
+    radio_state_map.insert("KONE", &kone_states);
+    let mut ktwo_states = HashSet::new();
+    ktwo_states.insert("WA");
+    ktwo_states.insert("ID");
+    ktwo_states.insert("MT");
+    radio_state_map.insert("KTWO", &ktwo_states);
+    let mut kthree_states = HashSet::new();
+    kthree_states.insert("OR");
+    kthree_states.insert("NV");
+    kthree_states.insert("CA");
+    radio_state_map.insert("KTHREE", &kthree_states);
+    let mut kfour_states = HashSet::new();
+    kfour_states.insert("NV");
+    kfour_states.insert("UT");
+    radio_state_map.insert("KFOUR", &kfour_states);
+    let mut kfive_states = HashSet::new();
+    kfive_states.insert("CA");
+    kfive_states.insert("AZ");
+    radio_state_map.insert("KFIVE", &kfive_states);
 
     // 2^n total combinations possible
     // E.g. n= 3 = 8
@@ -29,6 +47,7 @@ fn test_greedy() {
     needed_states.insert("CA");
     needed_states.insert("AZ");
 
-    greedy(&radio_state_map, &needed_states);
-
+    let res = greedy(&radio_state_map, &needed_states);
+    // We need 4 out of the 5 stations. The stations can be different each run.
+    assert_eq!(4, res.unwrap().len());
 }
