@@ -24,7 +24,7 @@ fn dijkstra_algo() {
     graph.m_nodes.push(&delta);
     graph.m_nodes.push(&echo);
 
-    let shortestPath = dijkstra(&graph);
-    assert_eq!("EchoDeltaCharlieBravoAlpha", shortestPath.unwrap());
+    let shortest_path = dijkstra(&graph);
+    assert_eq!("EchoDeltaCharlieBravoAlpha", shortest_path.unwrap());
 }
 

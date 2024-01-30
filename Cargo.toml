@@ -5,7 +5,8 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+name = "grokking_algorithms"
+
 [dependencies]
-actix-web = "4"
-actix-files = "0.6.5"
 rand = "0.8.5"
